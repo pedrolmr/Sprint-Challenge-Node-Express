@@ -172,4 +172,18 @@ server.delete('/api/actions/:id', (req, res) => {
         })
 })
 
+server.get('/api/actions/project/:id', (req, res) => {
+    const { id } = req.params;
+
+    projectDB.getProjectActions(id)
+        .then(actions => {
+            if (actions.length > 0) {
+                res.status(200).json(actions)
+            } else {
+                res.status(404).json({ message: 'the project has no actions' })
+            }
+        })
+})
+
+
 module.exports = server;
