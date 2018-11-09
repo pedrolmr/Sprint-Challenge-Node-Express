@@ -51,4 +51,41 @@ server.post('/api/projects/', (req, res) => {
     }
 })
 
+server.put('/api/projects/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    const content = { name, description };
+
+    if(content){
+        projectDB.update(id, content)
+            .then(project => {
+                if (project) {
+                    res.status(200).json({ message: 'The project has been updated' });
+                } else {
+                    res.status(404).json(null);
+                }
+            })
+            .catch(error => {
+                res.json({ errorMessage: 'The project information could not be modified', error: error });
+            })
+    } else {
+        res.status(400).json({ message: 'Please provide the information required' });
+    }
+})
+
+server.delete('/api/projects/:id', (req, res) => {
+    const { id } = req.params;
+
+    projectDB.remove(id)
+        .then(count => {
+            if (count === 1) {
+                res.status(200).json({ message: 'The project has been deleted' });
+            } else {
+                res.status(404).json({ message: 'The project does not exist' })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ error: 'The project cannot be deleted', error: error })
+        })
+})
 module.exports = server;
