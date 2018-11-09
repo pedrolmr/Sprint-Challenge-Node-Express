@@ -88,4 +88,49 @@ server.delete('/api/projects/:id', (req, res) => {
             res.status(500).json({ error: 'The project cannot be deleted', error: error })
         })
 })
+
+//actions
+
+server.get('/api/actions', (req, res) => {
+    actionDB.get()
+        .then(action => {
+            res.status(200).json(action)
+        })
+        .catch(error => {
+            res.status(500).json({ error: error });
+        })
+})
+
+server.get('/api/actions/:id', (req, res) => {
+    const { id } = req.params;
+
+    actionDB.get(id)
+        .then(action => {
+            if (action) {
+                res.status(200).json(action)
+            } else {
+                res.status(404).json({ message: 'Action does not exist' })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ error: 'Action cannot be retrieved', error: error })
+        })
+})
+
+server.post('/api/actions/', (req, res) => {
+    const { project_id, description, notes, completed } = req.body;
+    const content = { project_id, description, notes, completed };
+    if (content) {
+        actionDB.insert(req.body)
+            .then(action => {
+                res.status(201).json(action)
+            })
+            .catch(error => {
+                res.status(500).json({ error: 'the action could not be added', error });
+            })
+    } else {
+        res.status(400).json({ errorMessage: 'Please provide the required information' });
+    }
+})
+
 module.exports = server;
