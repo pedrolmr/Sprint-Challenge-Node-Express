@@ -12,6 +12,7 @@
 
 ## What is Middleware?
     A: Middleware is a framework that allows us to extend the features provided by express.js. For example we can use middleware in authentication and logging. If I wanted to check if the username was "pedro" I would create a custom middleware that checks if the value of the username is equal to pedro, if it is then move to the next step
+    
 ## What is a Resource?
     A: a resource is everything that is accessible via a unique URL and the management is done via HTTP requests.
 
